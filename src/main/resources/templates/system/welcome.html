@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>萱龙网欢迎您</title>
+<style type="text/css">
+body {
+	margin:0px;
+	padding:0px;
+}
+#inDiv {
+    height: 45px;
+    background-image: -webkit-linear-gradient(left,blue,#66ffff 10%,#cc00ff 20%,#CC00CC 30%, #CCCCFF 40%, #00FFFF 50%,#CCCCFF 60%,#CC00CC 70%,#CC00FF 80%,#66FFFF 90%,blue 100%);
+    -webkit-text-fill-color: transparent;/* 将字体设置成透明色 */
+    -webkit-background-clip: text;/* 裁剪背景图，使文字作为裁剪区域向外裁剪 */
+    -webkit-background-size: 200% 100%; 
+    -webkit-animation: masked-animation 4s linear infinite;
+    font-size: 35px;
+    width:110px;
+}
+
+@keyframes masked-animation {
+    0% {
+        background-position: 0  0;
+    }
+    100% {
+        background-position: -100%  0;
+    }
+}
+#outDiv {
+	background-color:#404040;
+	background:-webkit-linear-gradient(left,#404040,lightblue);
+}
+</style>
+</head>
+<body>
+	
+	<!-- head -->
+	<div id="outDiv">
+		<div id="inDiv">
+			<a th:text="#{web.name}" th:href="#{web.site}"></a>
+		</div>
+	</div>
+	
+	<!-- body -->
+	<div>
+		<a href="#" target="_blank"> 
+		<img height="480px" width="1366px" src="/static/img/welcome.jpg" th:src="@{/static/img/welcome.jpg}"
+			border="0" />
+		</a>
+	</div>
+	
+	<!-- foot -->	
+	<!-- <%@include file="../common/foot.jsp"%> -->
+		<div th:replace="common/foot::foot"></div>
+</body>
+</html>

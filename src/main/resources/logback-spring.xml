@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+     <contextName>logback</contextName>
+     
+     <!-- springboot看到logback-spring.xml的时候，才会启动日志的环境切换，logback.xml无法做到
+     		在需要切换的环境上加上springProfile标签
+      -->
+     <springProfile name="dev">
+     	<!-- property定义常量 -->
+     	<property name="LOG_HOME" value="applog/dev"></property>
+     </springProfile>
+     <springProfile name="prd">
+     	<property name="LOG_HOME" value="applog/prd"></property>
+     </springProfile>
+    <!-- 输出到控制台 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+        <!-- 日志输出格式及编码 -->
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+   <!--  输出到文件，按天生成日志 -->
+    <appender name="logFile"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Prudent>true</Prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 定义保存的文件名 -->
+            <FileNamePattern>
+            <!-- %d{yyyy-MM-dd}代表每天生成一个日志 -->
+               ${LOG_HOME}/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}.log
+            </FileNamePattern>
+            <!-- 日志最多保存30天，也就是30份 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} -%msg%n
+            </Pattern>
+        </layout>
+        <!-- 日滚动输出文件中，只保存错误级别及以上的信息  -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        	<level>ERROR</level>
+        	<onMatch>ACCEPT</onMatch>
+        	<onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <logger name="com.sjl" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logFile" />
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logFile" />
+    </root> 
+
+</configuration>

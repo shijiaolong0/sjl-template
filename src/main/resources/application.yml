@@ -1,0 +1,33 @@
+######此基础文件的配置优先级低于对应环境的配置，如果有相同的，则取对应环境的配置#######
+server:
+#session 失效时间
+  session-timeout: 1800
+  port: 1024
+  servlet:
+    context-path: /sjl
+spring:
+#thymeleaf缓存  开发的时候关闭 ，否则会有缓存，导致页面没法及时看到更新后的效果。
+# 比如你修改了一个文件，已经update到tomcat，但刷新页面还是之前的页面，就是因为缓存引起的。
+  thymeleaf:
+    mode: HTML5
+    cache: false
+#默认配置的视图解析器
+    prefix: classpath:/templates/
+    stuffix: .html
+  profiles: 
+    active: dev 
+#设置前台显示的时间格式和调整时间与标准时间的偏差
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss SSS 
+    time-zone: GMT+8  
+#默认情况下static下面的文件不可直接访问，配置访问权限，开启静态资源文件访问权限
+  mvc:
+    static-path-pattern: /static/**       
+mybatis: 
+  configuration:
+#开启驼峰功能                数据库user_id   实体类userId
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: 'null'
+  mapper-locations: mybatis/**/*Mapper.xml
+#设置别名   默认首字母小写的实体类名
+  typeAliasesPackage: com.sjl.**.entity
